@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
-//import Navigation from './components/Navigation/Navigation.js'; 
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
 import ImageRecognition from './components/ImageRecognition/ImageRecognition.js';
 import './App.css';
@@ -15,20 +14,27 @@ const app = new Clarifai.App({
 const particlesOptions = {
   particles: {
     number: {
-      value: 80,
+      value: 110,
       density: {
         enable: true,
-        value_area: 800
+        value_area: 631
       }
     },
     move: {
       enable: true,
       speed: 10
     }
+  },
+  interactivity: {
+    onhover: {
+      enable: true,
+      mode: "repulse"
+    }
   }
 }
 
 class App extends Component {
+  //Konstruktori
   constructor() {
     super();
     this.state = {
@@ -38,6 +44,7 @@ class App extends Component {
     }
   }
 
+  //Lasketaan kasvojen ympärille tulostettavan laatikon reunojen paikat
   calculateFace = (data) => {
     const clarifaiFaces = data.outputs[0].data.regions.map(region => region.region_info.bounding_box);
     const image = document.getElementById('inputimage');
@@ -53,6 +60,7 @@ class App extends Component {
     });
   }
 
+  //Tulostetaan laatikot
   displayFaceBox = (boxes) => {
     console.log(boxes)
     this.setState({boxes: boxes})
@@ -62,6 +70,7 @@ class App extends Component {
     this.setState({input: event.target.value});
   }
 
+  //Kun painetaan lähetä nappia otetaan käyttöön API
   onSubmit = () => {
     this.setState({ imageUrl: this.state.input })
     app.models
@@ -72,13 +81,13 @@ class App extends Component {
     .catch(err => console.log(err));
   }
 
+  //Otetaan käyttöön kaikki komponentit
   render() {
     return (
       <div className="App">
         <Particles className='particles' 
           params={particlesOptions}
         />
-        {/*<Navigation />*/}
         <ImageRecognition onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
         <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl} />
       </div>
