@@ -1,37 +1,12 @@
 import React, { Component } from 'react';
-import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
-import ImageRecognition from './components/ImageRecognition/ImageRecognition.js';
 import './App.css';
 
 //Otetaan käyttöön Clarifain API
 const app = new Clarifai.App({
   apiKey: '49281616b54242249b7eec4f5d41de07'
 });
-
-//Taustan partikkelien asetukset
-const particlesOptions = {
-  particles: {
-    number: {
-      value: 110,
-      density: {
-        enable: true,
-        value_area: 631
-      }
-    },
-    move: {
-      enable: true,
-      speed: 10
-    }
-  },
-  interactivity: {
-    onhover: {
-      enable: true,
-      mode: "repulse"
-    }
-  }
-}
 
 class App extends Component {
   //Konstruktori
@@ -85,11 +60,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Particles className='particles' 
-          params={particlesOptions}
-        />
-        <ImageRecognition onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
-        <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl} />
+        <div>
+          <p className='f3 white'>
+                  {'Tämän sivun tarkoitus on tunnistaa kasvot kuvista.'}
+              </p>
+              <p className='i f4 white'>
+                  {'Liitä kuvan linkki tekstikenttään.'}
+          </p>
+          <input className='f4 pa2 w-30 center' type='text' onChange={this.onInputChange} />
+          <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl} />
+          <button className='w-30 grow f4 link ph3 pv2 dib white bg-mid-gray' onClick={this.onSubmit}>Tunnista</button>
+        </div>
       </div>
     );
   }
